@@ -29,3 +29,8 @@ If you are using a self-hosted service, change the server address in the configu
 ### License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+
+### To Do
+- Comments
+- Tests
+- Copy readme from other prerender framework integrations
