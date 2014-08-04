@@ -10,7 +10,7 @@ Require this package in your composer.json and run composer update (or run `comp
 
 After updating composer, add the ServiceProvider to the providers array in app/config/app.php.
 
-    'Nutsweb/LaravelPrerender/LaravelPrerenderServiceProvider',
+    'Nutsweb\LaravelPrerender\LaravelPrerenderServiceProvider',
 
 Publish the configuration file.
 
