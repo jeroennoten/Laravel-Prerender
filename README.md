@@ -1,3 +1,5 @@
+Laravel middleware for prerendering javascript-rendered pages on the fly for SEO 
+
 ## Installation
 
 Require this package in your composer.json and run composer update (or run `composer require nutsweb/laravel-prerender:dev-master` directly):
