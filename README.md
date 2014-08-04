@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/JeroenNoten/Laravel-Prerender.svg?branch=master)](https://travis-ci.org/JeroenNoten/Laravel-Prerender)
+
 Laravel middleware for prerendering javascript-rendered pages on the fly for SEO 
 
 ## Installation
