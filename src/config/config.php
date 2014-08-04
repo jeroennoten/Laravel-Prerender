@@ -4,7 +4,7 @@
 
     'prerender_url' => 'http://service.prerender.io',
 
-    'prerender_token' => '9HjB2GCCd8KVQYSB8btz',
+    'prerender_token' => '',
 
     'crawler_user_agents' => [
         // googlebot, yahoo, and bingbot are not in this list because
