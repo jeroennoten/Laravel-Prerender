@@ -1,6 +1,8 @@
 {
     "name": "nutsweb/laravel-prerender",
-    "description": "",
+    "description": "Laravel middleware for prerendering javascript-rendered pages on the fly for SEO",
+    "keywords": ["laravel", "prerender"],
+    "license": "MIT",
     "authors": [
         {
             "name": "Jeroen Noten",

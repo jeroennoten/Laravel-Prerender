@@ -10,7 +10,7 @@ After updating composer, add the ServiceProvider to the providers array in app/c
 
 Publish the configuration file.
 
-    $ php artisan config:publish barryvdh/laravel-debugbar
+    $ php artisan config:publish nutsweb/laravel-prerender
 
 ### License
 
