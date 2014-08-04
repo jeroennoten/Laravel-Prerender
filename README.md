@@ -14,6 +14,16 @@ Publish the configuration file.
 
     $ php artisan config:publish nutsweb/laravel-prerender
 
+If you want to make use of the prerender.io service, fill in your token in the configuration file.
+    
+    // config.php
+    'prerender_token' => 'YOUR-TOKEN',
+    
+If you are using a self-hosted service, change the server address in the configuration file.
+
+    // config.php
+    'prerender_url' => 'http://example.com',
+
 ### License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
