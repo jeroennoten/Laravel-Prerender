@@ -1,7 +1,6 @@
 <?php namespace Nutsweb\LaravelPrerender;
 
 use App;
-use Config;
 use GuzzleHttp\Client;
 use Illuminate\Support\ServiceProvider;
 
@@ -34,6 +33,8 @@ class LaravelPrerenderServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        // We must register a package for cascading configuration ourselves, because it is normally done
+        // after booting the application, but we need the configuration beforehand.
         $namespace = $this->getPackageNamespace($this->package, null);
         $config = $this->guessPackagePath() . '/config';
         $this->app['config']->package($this->package, $config, $namespace);
@@ -52,16 +53,6 @@ class LaravelPrerenderServiceProvider extends ServiceProvider
             App::middleware('Nutsweb\LaravelPrerender\PrerenderMiddleware', $parameters);
 
         }
-    }
-
-    /**
-     * Get the services provided by the provider.
-     *
-     * @return array
-     */
-    public function provides()
-    {
-        return array();
     }
 
 }
