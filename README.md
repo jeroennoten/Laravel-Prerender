@@ -10,7 +10,7 @@ Require this package in your composer.json and run composer update (or run `comp
 
 After updating composer, add the ServiceProvider to the providers array in app/config/app.php.
 
-    'Nutsweb/LaravelPrerender/LaravelPrerenderServiceProvider',
+    'Nutsweb\LaravelPrerender\LaravelPrerenderServiceProvider',
 
 Publish the configuration file.
 
@@ -29,3 +29,8 @@ If you are using a self-hosted service, change the server address in the configu
 ### License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+
+### To Do
+- Comments
+- Tests
+- Copy readme from other prerender framework integrations
