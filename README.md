@@ -83,7 +83,7 @@ I love any contributions! Feel free to create issues or pull requests.
 
 The MIT License (MIT)
 
-Copyright (c) 2013 Todd Hooper &lt;todd@prerender.io&gt;
+Copyright (c) 2014 Jeroen Noten
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
