@@ -71,7 +71,7 @@ Note that this is the full request URI, so including starting slash and query pa
 ```js
 // config.php:
 'blacklist' => [
-    '/api/*' // do not prerender pages starting with '/api/*'
+    '/api/*' // do not prerender pages starting with '/api/'
 ],
 ```
 
