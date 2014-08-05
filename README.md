@@ -6,7 +6,7 @@ Google, Facebook, Twitter, Yahoo, and Bing are constantly trying to view your we
 This middleware intercepts requests to your Laravel website or application from crawlers, and then makes a call to the (external) Prerender Service to get the static HTML instead of the javascript for that page.
 
 Prerender adheres to google's `_escaped_fragment_` proposal, which we recommend you use. It's easy:
-- Just add `&lt;meta name="fragment" content="!"&gt;` to the `&lt;head&gt;` of all of your pages
+- Just add `<meta name="fragment" content="!">` to the `<head>` of all of your pages
 - If you use hash urls (#), change them to the hash-bang (#!), but you can also use HTML5's push-state
 - That's it! Perfect SEO on javascript pages.
 
