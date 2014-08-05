@@ -26,6 +26,8 @@ If you are using a self-hosted service, change the server address in the configu
     // config.php
     'prerender_url' => 'http://example.com',
 
+By default, the service is disabled for `local` environments. If you want, you can change this in `config/packages/nutsweb/laravel-prerender/local/config.php`.
+
 ### License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
