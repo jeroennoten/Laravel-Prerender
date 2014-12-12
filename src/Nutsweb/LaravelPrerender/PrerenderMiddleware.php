@@ -173,6 +173,11 @@ class PrerenderMiddleware implements HttpKernelInterface
             // Return the Guzzle Response
             return $this->client->get('/' . urlencode($request->getUri()), compact('headers'));
         } catch (RequestException $exception) {
+            // Pass 404 errors to the browser assuming it comes from meta-tag prerender-status-code
+            if ($exception->getCode() == '404') {
+                \App::abort('404');
+            }
+
             // In case of an exception, we only throw the exception if we are in debug mode. Otherwise,
             // we return null and the handle() method will just pass the request to the next middleware
             // and we do not show a prerendered page.
