@@ -16,7 +16,7 @@ Prerender adheres to google's `_escaped_fragment_` proposal, which we recommend 
 
 Require this package run: `composer require nutsweb/laravel-prerender`
 
-After installing, add the ServiceProvider to the providers array in app/config/app.php.
+After installing, add the ServiceProvider to the providers array in `config/app.php`.
 
     'Nutsweb\LaravelPrerender\LaravelPrerenderServiceProvider',
 
