@@ -11,7 +11,7 @@
     |
     */
 
-    'enable' => true,
+    'enable' => env('PRERENDER_ENABLE', true),
 
     /*
     |--------------------------------------------------------------------------
@@ -25,7 +25,7 @@
     |
     */
 
-    'prerender_url' => 'https://service.prerender.io',
+    'prerender_url' => env('PRERENDER_URL', 'https://service.prerender.io'),
 
     /*
     |--------------------------------------------------------------------------
@@ -38,7 +38,7 @@
     |
     */
 
-    'prerender_token' => '',
+    'prerender_token' => env('PRERENDER_TOKEN'),
 
     /*
     |--------------------------------------------------------------------------

@@ -1,3 +1,5 @@
+#### For Laravel 4, use the [1.0 branch](https://github.com/JeroenNoten/Laravel-Prerender/tree/1.0)
+
 Laravel Prerender [![Build Status](https://travis-ci.org/JeroenNoten/Laravel-Prerender.svg?branch=master)](https://travis-ci.org/JeroenNoten/Laravel-Prerender)
 =========================== 
 
@@ -12,29 +14,25 @@ Prerender adheres to google's `_escaped_fragment_` proposal, which we recommend 
 
 ## Installation
 
-Require this package in your composer.json and run composer update (or run `composer require nutsweb/laravel-prerender:dev-master` directly):
+Require this package run: `composer require nutsweb/laravel-prerender`
 
-    "nutsweb/laravel-prerender": "dev-master"
-
-After updating composer, add the ServiceProvider to the providers array in app/config/app.php.
+After installing, add the ServiceProvider to the providers array in app/config/app.php.
 
     'Nutsweb\LaravelPrerender\LaravelPrerenderServiceProvider',
 
-Publish the configuration file.
+If you want to make use of the prerender.io service, add the following to your `.env` file:
 
-    $ php artisan config:publish nutsweb/laravel-prerender
+    PRERENDER_TOKEN=yoursecrettoken
 
-If you want to make use of the prerender.io service, fill in your token in the configuration file.
-    
-    // config.php
-    'prerender_token' => 'YOUR-TOKEN',
-    
-If you are using a self-hosted service, change the server address in the configuration file.
+If you are using a self-hosted service, add the server address in the `.env` file.
 
-    // config.php
-    'prerender_url' => 'http://example.com',
+    PRERENDER_URL=http://example.com
 
-By default, the service is disabled for `local` environments. If you want, you can change this in `config/packages/nutsweb/laravel-prerender/local/config.php`.
+You can disable the service by adding the following to your `.env` file:
+
+    PRERENDER_ENABLE=false
+
+This may be useful for your local development environment.
 
 ## How it works
 1. The middleware checks to make sure we should show a prerendered page
@@ -47,6 +45,10 @@ By default, the service is disabled for `local` environments. If you want, you c
 
 # Customization
 
+To customize the whitelist and the blacklist, you first have to publish the configuration file:
+
+    $ php artisan vendor:publish
+
 ### Whitelist
 
 Whitelist paths or patterns. You can use asterix syntax, or regular expressions (without start and end markers).
@@ -55,7 +57,7 @@ An empty array means that all URIs will pass this filter.
 Note that this is the full request URI, so including starting slash and query parameter string.
 
 ```php
-// config.php:
+// prerender.php:
 'whitelist' => [
     '/frontend/*' // only prerender pages starting with '/frontend/'
 ],
@@ -68,8 +70,8 @@ If a blacklist is supplied, all url's will be prerendered except ones containing
 By default, a set of asset extentions are included (this is actually only necessary when you dynamically provide assets via routes).
 Note that this is the full request URI, so including starting slash and query parameter string.
 
-```js
-// config.php:
+```php
+// prerender.php:
 'blacklist' => [
     '/api/*' // do not prerender pages starting with '/api/'
 ],

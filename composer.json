@@ -10,13 +10,14 @@
         }
     ],
     "require": {
-        "php": ">=5.4.0",
-        "illuminate/support": "4.2.*",
-        "guzzlehttp/guzzle": "~4.0"
+        "php": ">=5.5.9",
+        "illuminate/support": "~5.0.14|~5.1",
+        "guzzlehttp/guzzle": "^6.0",
+        "symfony/psr-http-message-bridge": "^0.2.0"
     },
     "autoload": {
-        "psr-0": {
-            "Nutsweb\\LaravelPrerender": "src/"
+        "psr-4": {
+            "Nutsweb\\LaravelPrerender\\": "src/"
         }
     },
     "minimum-stability": "stable"

@@ -4,27 +4,27 @@
 namespace Nutsweb\LaravelPrerender;
 
 
-use GuzzleHttp\Client as GuzzleClient;
+use Closure;
 use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Message\Response as GuzzleResponse;
-use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
-use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Illuminate\Contracts\Foundation\Application;
+use GuzzleHttp\Client as Guzzle;
+use Psr\Http\Message\ResponseInterface;
+use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
+use Symfony\Component\HttpFoundation\Response;
 
-class PrerenderMiddleware implements HttpKernelInterface
+class PrerenderMiddleware
 {
     /**
-     * The application instance (implements the HttpKernelInterface)
+     * The application instance
      *
-     * @var HttpKernelInterface
+     * @var Application
      */
     private $app;
 
     /**
      * The Guzzle Client that sends GET requests to the prerender server
-     * This client must take care of the base URL by itself
      *
-     * @var GuzzleClient
+     * @var Guzzle
      */
     private $client;
 
@@ -57,39 +57,42 @@ class PrerenderMiddleware implements HttpKernelInterface
     private $blacklist;
 
     /**
+     * Base URI to make the prerender requests
+     *
+     * @var string
+     */
+    private $prerenderUri;
+
+    /**
      * Creates a new PrerenderMiddleware instance
      *
-     * @param HttpKernelInterface $app
-     * @param GuzzleClient $client
-     * @param $prerenderToken
-     * @param array $crawlerUserAgents
-     * @param array $whitelist
-     * @param array $blacklist
+     * @param Application $app
+     * @param Guzzle $client
      */
-    public function __construct(HttpKernelInterface $app,
-                                GuzzleClient $client,
-                                $prerenderToken,
-                                array $crawlerUserAgents,
-                                array $whitelist,
-                                array $blacklist)
+    public function __construct(Application $app, Guzzle $client)
     {
         $this->app = $app;
         $this->client = $client;
-        $this->crawlerUserAgents = $crawlerUserAgents;
-        $this->prerenderToken = $prerenderToken;
-        $this->whitelist = $whitelist;
-        $this->blacklist = $blacklist;
+
+        $config = $app['config']->get('prerender');
+
+        $this->prerenderUri = $config['prerender_url'];
+        $this->crawlerUserAgents = $config['crawler_user_agents'];
+        $this->prerenderToken = $config['prerender_token'];
+        $this->whitelist = $config['whitelist'];
+        $this->blacklist = $config['blacklist'];
     }
 
     /**
      * Handles a request and prerender if it should, otherwise call the next middleware.
      *
-     * @param SymfonyRequest $request
-     * @param int $type
-     * @param bool $catch
-     * @return SymfonyResponse
+     * @param $request
+     * @param Closure $next
+     * @return Response
+     * @internal param int $type
+     * @internal param bool $catch
      */
-    public function handle(SymfonyRequest $request, $type = self::MASTER_REQUEST, $catch = true)
+    public function handle($request, Closure $next)
     {
         if ($this->shouldShowPrerenderedPage($request)) {
             $prerenderedResponse = $this->getPrerenderedPageResponse($request);
@@ -98,16 +101,16 @@ class PrerenderMiddleware implements HttpKernelInterface
             }
         }
 
-        return $this->app->handle($request, $type, $catch);
+        return $next($request);
     }
 
     /**
      * Returns whether the request must be prerendered.
      *
-     * @param SymfonyRequest $request
+     * @param $request
      * @return bool
      */
-    private function shouldShowPrerenderedPage(SymfonyRequest $request)
+    private function shouldShowPrerenderedPage($request)
     {
         $userAgent = strtolower($request->server->get('HTTP_USER_AGENT'));
         $bufferAgent = $request->server->get('X-BUFFERBOT');
@@ -157,10 +160,10 @@ class PrerenderMiddleware implements HttpKernelInterface
     /**
      * Prerender the page and return the Guzzle Response
      *
-     * @param SymfonyRequest $request
+     * @param $request
      * @return null|void
      */
-    private function getPrerenderedPageResponse(SymfonyRequest $request)
+    private function getPrerenderedPageResponse($request)
     {
         $headers = [
             'User-Agent' => $request->server->get('HTTP_USER_AGENT'),
@@ -171,7 +174,8 @@ class PrerenderMiddleware implements HttpKernelInterface
 
         try {
             // Return the Guzzle Response
-            return $this->client->get('/' . urlencode($request->getUri()), compact('headers'));
+            $originalUri = $request->getUri();
+            return $this->client->get($this->prerenderUri . '/' . urlencode($originalUri), compact('headers'));
         } catch (RequestException $exception) {
             // In case of an exception, we only throw the exception if we are in debug mode. Otherwise,
             // we return null and the handle() method will just pass the request to the next middleware
@@ -186,15 +190,12 @@ class PrerenderMiddleware implements HttpKernelInterface
     /**
      * Convert a Guzzle Response to a Symfony Response
      *
-     * @param GuzzleResponse $prerenderedResponse
-     * @return SymfonyResponse
+     * @param ResponseInterface $prerenderedResponse
+     * @return Response
      */
-    private function buildSymfonyResponseFromGuzzleResponse(GuzzleResponse $prerenderedResponse)
+    private function buildSymfonyResponseFromGuzzleResponse(ResponseInterface $prerenderedResponse)
     {
-        $body = $prerenderedResponse->getBody();
-        $statusCode = $prerenderedResponse->getStatusCode();
-        $headers = $prerenderedResponse->getHeaders();
-        return new SymfonyResponse($body, $statusCode, $headers);
+        return (new HttpFoundationFactory)->createResponse($prerenderedResponse);
     }
 
     /**
