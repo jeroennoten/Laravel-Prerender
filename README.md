@@ -12,7 +12,7 @@ Prerender adheres to google's `_escaped_fragment_` proposal, which we recommend 
 
 ## Installation
 
-Require this package in your composer.json and run composer update (or run `composer require nutsweb/laravel-prerender:dev-master` directly):
+To require this package, run: `composer require nutsweb/laravel-prerender ~1.0`
 
     "nutsweb/laravel-prerender": "dev-master"
 
