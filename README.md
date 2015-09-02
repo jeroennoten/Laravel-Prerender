@@ -1,3 +1,5 @@
+#### For Laravel 5, use the [master branch](https://github.com/JeroenNoten/Laravel-Prerender)
+
 Laravel Prerender [![Build Status](https://travis-ci.org/JeroenNoten/Laravel-Prerender.svg?branch=master)](https://travis-ci.org/JeroenNoten/Laravel-Prerender)
 =========================== 
 
