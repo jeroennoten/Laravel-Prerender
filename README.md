@@ -51,7 +51,7 @@ To customize the whitelist and the blacklist, you first have to publish the conf
 
 ### Whitelist
 
-Whitelist paths or patterns. You can use asterix syntax, or regular expressions (without start and end markers).
+Whitelist paths or patterns. You can use asterix syntax.
 If a whitelist is supplied, only url's containing a whitelist path will be prerendered.
 An empty array means that all URIs will pass this filter.
 Note that this is the full request URI, so including starting slash and query parameter string.
@@ -65,7 +65,7 @@ Note that this is the full request URI, so including starting slash and query pa
 
 ### Blacklist
 
-Blacklist paths to exclude. You can use asterix syntax, or regular expressions (without start and end markers).
+Blacklist paths to exclude. You can use asterix syntax.
 If a blacklist is supplied, all url's will be prerendered except ones containing a blacklist path.
 By default, a set of asset extentions are included (this is actually only necessary when you dynamically provide assets via routes).
 Note that this is the full request URI, so including starting slash and query parameter string.
