@@ -11,7 +11,6 @@ use GuzzleHttp\Client as Guzzle;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\HttpFoundation\Response;
-use Log;
 
 class PrerenderMiddleware
 {
