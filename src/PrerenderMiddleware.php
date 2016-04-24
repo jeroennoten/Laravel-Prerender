@@ -171,11 +171,14 @@ class PrerenderMiddleware
         if ($this->prerenderToken) {
             $headers['X-Prerender-Token'] = $this->prerenderToken;
         }
-
+	
+	$protocol = $request->isSecure() ? 'https' : 'http';
+	
         try {
             // Return the Guzzle Response
-            $originalUri = $request->getUri();
-            return $this->client->get($this->prerenderUri . '/' . urlencode($originalUri), compact('headers'));
+	    $host = $request->getHost();
+            $path = $request->Path();
+            return $this->client->get($this->prerenderUri . '/' . urlencode($protocol.'://'.$host.'/'.$path), compact('headers'));
         } catch (RequestException $exception) {
             // In case of an exception, we only throw the exception if we are in debug mode. Otherwise,
             // we return null and the handle() method will just pass the request to the next middleware
