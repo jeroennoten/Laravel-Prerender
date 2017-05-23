@@ -5,6 +5,7 @@ namespace Nutsweb\LaravelPrerender;
 
 
 use Closure;
+use Redirect;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Contracts\Foundation\Application;
 use GuzzleHttp\Client as Guzzle;
@@ -72,7 +73,11 @@ class PrerenderMiddleware
     public function __construct(Application $app, Guzzle $client)
     {
         $this->app = $app;
-        $this->client = $client;
+
+        // Workaround to avoid following redirects
+        $config = $client->getConfig();
+        $config['allow_redirects'] = false;
+        $this->client = new Guzzle($config);
 
         $config = $app['config']->get('prerender');
 
@@ -96,6 +101,12 @@ class PrerenderMiddleware
     {
         if ($this->shouldShowPrerenderedPage($request)) {
             $prerenderedResponse = $this->getPrerenderedPageResponse($request);
+            $statusCode = $prerenderedResponse->getStatusCode();
+
+            if ($statusCode >= 300 && $statusCode < 400) {
+                return Redirect::to($prerenderedResponse->getHeaders()["Location"][0], $statusCode);
+            }
+
             if ($prerenderedResponse) {
                 return $this->buildSymfonyResponseFromGuzzleResponse($prerenderedResponse);
             }
@@ -180,6 +191,9 @@ class PrerenderMiddleware
             $path = $request->Path();
             return $this->client->get($this->prerenderUri . '/' . urlencode($protocol.'://'.$host.'/'.$path), compact('headers'));
         } catch (RequestException $exception) {
+            if(!empty($exception->getResponse()) && $exception->getResponse()->getStatusCode() == 404) {
+                \App::abort(404);
+            }
             // In case of an exception, we only throw the exception if we are in debug mode. Otherwise,
             // we return null and the handle() method will just pass the request to the next middleware
             // and we do not show a prerendered page.
