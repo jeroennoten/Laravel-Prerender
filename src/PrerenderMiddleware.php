@@ -113,13 +113,14 @@ class PrerenderMiddleware
     {
         if ($this->shouldShowPrerenderedPage($request)) {
             $prerenderedResponse = $this->getPrerenderedPageResponse($request);
-            $statusCode = $prerenderedResponse->getStatusCode();
-
-            if (!$this->returnSoftHttpCodes && $statusCode >= 300 && $statusCode < 400) {
-                return Redirect::to($prerenderedResponse->getHeaders()["Location"][0], $statusCode);
-            } 
 
             if ($prerenderedResponse) {
+                $statusCode = $prerenderedResponse->getStatusCode();
+
+                if (!$this->returnSoftHttpCodes && $statusCode >= 300 && $statusCode < 400) {
+                    return Redirect::to($prerenderedResponse->getHeaders()["Location"][0], $statusCode);
+                }
+
                 return $this->buildSymfonyResponseFromGuzzleResponse($prerenderedResponse);
             }
         }
