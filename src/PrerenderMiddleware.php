@@ -82,7 +82,7 @@ class PrerenderMiddleware
         $this->app = $app;
         $this->returnSoftHttpCodes = $app['config']->get('prerender')['prerender_soft_http_codes'];
 
-        if (!$this->returnSoftHttpCodes) {
+        if ($this->returnSoftHttpCodes) {
             $this->client = $client;
         } else {
             // Workaround to avoid following redirects
