@@ -141,13 +141,10 @@
     */
 
     'crawler_user_agents' => [
-        // googlebot, yahoo, and bingbot are not in this list because
-        // we support _escaped_fragment_ and want to ensure people aren't
-        // penalized for cloaking.
-
-        // 'googlebot',
-        // 'yahoo',
-        // 'bingbot',
+        'googlebot',
+        'yahoo',
+        'bingbot',
+        'yandex',
         'baiduspider',
         'facebookexternalhit',
         'twitterbot',
