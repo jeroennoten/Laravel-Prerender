@@ -95,6 +95,7 @@
         '*.png',
         '*.jpg',
         '*.jpeg',
+        '*.svg',
         '*.gif',
         '*.pdf',
         '*.doc',
@@ -125,7 +126,12 @@
         '*.iso',
         '*.flv',
         '*.m4v',
-        '*.torrent'
+        '*.torrent',
+        '*.eot',
+        '*.ttf',
+        '*.otf',
+        '*.woff',
+        '*.woff2'
     ],
 
 
