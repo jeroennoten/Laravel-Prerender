@@ -199,14 +199,32 @@ class PrerenderMiddleware
         $protocol = $request->isSecure() ? 'https' : 'http';
     
         try {
+
             // Return the Guzzle Response
-        $host = $request->getHost();
+            $host = $request->getHost();
             $path = $request->Path();
+
+            //get request params
+            $params = $request->query();
             // Fix "//" 404 error
             if ($path == "/") {
                 $path = "";
             }
-            return $this->client->get($this->prerenderUri . '/' . urlencode($protocol.'://'.$host.'/'.$path), compact('headers'));
+
+            $paramsString = "?";
+
+            //convert the param array to a string
+            $i = 1;
+            foreach ($params as $key => $value){
+
+                $paramsString .= $key . "=" . $value;
+                if(count($params) > $i){
+                    $paramsString .= "&";
+                }
+                $i++;
+            }
+
+            return $this->client->get($this->prerenderUri . '/' . urlencode($protocol.'://'.$host.'/'.$path.$paramsString), compact('headers'));
         } catch (RequestException $exception) {
             if(!$this->returnSoftHttpCodes && !empty($exception->getResponse()) && $exception->getResponse()->getStatusCode() == 404) {
                 \App::abort(404);
