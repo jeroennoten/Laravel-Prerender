@@ -204,27 +204,13 @@ class PrerenderMiddleware
             $host = $request->getHost();
             $path = $request->Path();
 
-            //get request params
-            $params = $request->query();
             // Fix "//" 404 error
             if ($path == "/") {
                 $path = "";
             }
 
-            $paramsString = "?";
+            return $this->client->get($this->prerenderUri . '/' . urlencode($protocol.'://'.$host.'/'.$path.'?'.$request->getQueryString()), compact('headers'));
 
-            //convert the param array to a string
-            $i = 1;
-            foreach ($params as $key => $value){
-
-                $paramsString .= $key . "=" . $value;
-                if(count($params) > $i){
-                    $paramsString .= "&";
-                }
-                $i++;
-            }
-
-            return $this->client->get($this->prerenderUri . '/' . urlencode($protocol.'://'.$host.'/'.$path.$paramsString), compact('headers'));
         } catch (RequestException $exception) {
             if(!$this->returnSoftHttpCodes && !empty($exception->getResponse()) && $exception->getResponse()->getStatusCode() == 404) {
                 \App::abort(404);
