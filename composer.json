@@ -11,7 +11,7 @@
     ],
     "require": {
         "php": ">=5.5.9",
-        "illuminate/support": "~5.0.14|~5.1",
+        "illuminate/support": "~5.0.14|~5.1|^6.0",
         "guzzlehttp/guzzle": "^6.0",
         "symfony/psr-http-message-bridge": "^1.0"
     },

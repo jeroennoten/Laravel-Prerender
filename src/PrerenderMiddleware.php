@@ -5,11 +5,12 @@ namespace Nutsweb\LaravelPrerender;
 
 
 use Closure;
-use Redirect;
+use GuzzleHttp\Client as Guzzle;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Contracts\Foundation\Application;
-use GuzzleHttp\Client as Guzzle;
+use Illuminate\Support\Str;
 use Psr\Http\Message\ResponseInterface;
+use Redirect;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -151,7 +152,7 @@ class PrerenderMiddleware
 
         // prerender if a crawler is detected
         foreach ($this->crawlerUserAgents as $crawlerUserAgent) {
-            if (str_contains($userAgent, strtolower($crawlerUserAgent))) {
+            if (Str::contains($userAgent, strtolower($crawlerUserAgent))) {
                 $isRequestingPrerenderedPage = true;
             }
         }
@@ -245,7 +246,7 @@ class PrerenderMiddleware
 
         foreach ($list as $pattern) {
             foreach ($needles as $needle) {
-                if (str_is($pattern, $needle)) {
+                if (Str::is($pattern, $needle)) {
                     return true;
                 }
             }
