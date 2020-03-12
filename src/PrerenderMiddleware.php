@@ -118,7 +118,8 @@ class PrerenderMiddleware
                 $statusCode = $prerenderedResponse->getStatusCode();
 
                 if (!$this->returnSoftHttpCodes && $statusCode >= 300 && $statusCode < 400) {
-                    return Redirect::to($prerenderedResponse->getHeaders()["Location"][0], $statusCode);
+                    $headers = $prerenderedResponse->getHeaders();
+                    return Redirect::to(array_change_key_case($headers, CASE_LOWER)["location"][0], $statusCode);
                 }
 
                 return $this->buildSymfonyResponseFromGuzzleResponse($prerenderedResponse);
