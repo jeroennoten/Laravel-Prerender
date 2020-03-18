@@ -5,11 +5,12 @@ namespace Nutsweb\LaravelPrerender;
 
 
 use Closure;
-use Redirect;
+use GuzzleHttp\Client as Guzzle;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Contracts\Foundation\Application;
-use GuzzleHttp\Client as Guzzle;
+use Illuminate\Support\Str;
 use Psr\Http\Message\ResponseInterface;
+use Redirect;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -152,7 +153,7 @@ class PrerenderMiddleware
 
         // prerender if a crawler is detected
         foreach ($this->crawlerUserAgents as $crawlerUserAgent) {
-            if (str_contains($userAgent, strtolower($crawlerUserAgent))) {
+            if (Str::contains($userAgent, strtolower($crawlerUserAgent))) {
                 $isRequestingPrerenderedPage = true;
             }
         }
@@ -197,17 +198,10 @@ class PrerenderMiddleware
             $headers['X-Prerender-Token'] = $this->prerenderToken;
         }
     
-        $protocol = $request->isSecure() ? 'https' : 'http';
-    
         try {
             // Return the Guzzle Response
-        $host = $request->getHost();
-            $path = $request->Path();
-            // Fix "//" 404 error
-            if ($path == "/") {
-                $path = "";
-            }
-            return $this->client->get($this->prerenderUri . '/' . urlencode($protocol.'://'.$host.'/'.$path), compact('headers'));
+            $uri = $request->getUri();
+            return $this->client->get($this->prerenderUri . '/' . urlencode($uri), compact('headers'));
         } catch (RequestException $exception) {
             if(!$this->returnSoftHttpCodes && !empty($exception->getResponse()) && $exception->getResponse()->getStatusCode() == 404) {
                 \App::abort(404);
@@ -246,7 +240,7 @@ class PrerenderMiddleware
 
         foreach ($list as $pattern) {
             foreach ($needles as $needle) {
-                if (str_is($pattern, $needle)) {
+                if (Str::is($pattern, $needle)) {
                     return true;
                 }
             }
