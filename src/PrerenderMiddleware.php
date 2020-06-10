@@ -5,6 +5,8 @@ namespace Nutsweb\LaravelPrerender;
 
 
 use Closure;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Redirect;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Contracts\Foundation\Application;
@@ -119,7 +121,7 @@ class PrerenderMiddleware
 
                 if (!$this->returnSoftHttpCodes && $statusCode >= 300 && $statusCode < 400) {
                     $headers = $prerenderedResponse->getHeaders();
-                    return Redirect::to(array_change_key_case($headers, CASE_LOWER)["location"][0], $statusCode);
+                    return Redirect::to(array_change_key_case($headers, CASE_LOWER)['location'][0], $statusCode);
                 }
 
                 return $this->buildSymfonyResponseFromGuzzleResponse($prerenderedResponse);
@@ -152,7 +154,7 @@ class PrerenderMiddleware
 
         // prerender if a crawler is detected
         foreach ($this->crawlerUserAgents as $crawlerUserAgent) {
-            if (str_contains($userAgent, strtolower($crawlerUserAgent))) {
+            if (Str::contains($userAgent, strtolower($crawlerUserAgent))) {
                 $isRequestingPrerenderedPage = true;
             }
         }
@@ -204,8 +206,8 @@ class PrerenderMiddleware
         $host = $request->getHost();
             $path = $request->Path();
             // Fix "//" 404 error
-            if ($path == "/") {
-                $path = "";
+            if ($path === '/') {
+                $path = '';
             }
             return $this->client->get($this->prerenderUri . '/' . urlencode($protocol.'://'.$host.'/'.$path), compact('headers'));
         } catch (RequestException $exception) {
@@ -242,11 +244,11 @@ class PrerenderMiddleware
      */
     private function isListed($needles, $list)
     {
-        $needles = is_array($needles) ? $needles : [$needles];
+        $needles = Arr::wrap($needles);
 
         foreach ($list as $pattern) {
             foreach ($needles as $needle) {
-                if (str_is($pattern, $needle)) {
+                if (Str::is($pattern, $needle)) {
                     return true;
                 }
             }
