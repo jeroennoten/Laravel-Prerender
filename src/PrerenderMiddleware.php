@@ -4,6 +4,7 @@
 namespace Nutsweb\LaravelPrerender;
 
 
+use App;
 use Closure;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -212,7 +213,7 @@ class PrerenderMiddleware
             return $this->client->get($this->prerenderUri . '/' . urlencode($protocol.'://'.$host.'/'.$path), compact('headers'));
         } catch (RequestException $exception) {
             if(!$this->returnSoftHttpCodes && !empty($exception->getResponse()) && $exception->getResponse()->getStatusCode() === 404) {
-                \App::abort(404);
+                App::abort(404);
             }
             // In case of an exception, we only throw the exception if we are in debug mode. Otherwise,
             // we return null and the handle() method will just pass the request to the next middleware

@@ -1,20 +1,9 @@
 <?php namespace Nutsweb\LaravelPrerender;
 
-use App;
-use GuzzleHttp\Client;
-use Illuminate\Foundation\Http\Kernel;
 use Illuminate\Support\ServiceProvider;
 
 class LaravelPrerenderServiceProvider extends ServiceProvider
 {
-
-    /**
-     * Indicates if loading of the provider is deferred.
-     *
-     * @var bool
-     */
-    protected $defer = false;
-
     protected $package = 'nutsweb/laravel-prerender';
 
     /**
@@ -29,7 +18,7 @@ class LaravelPrerenderServiceProvider extends ServiceProvider
         ], 'config');
 
         if ($this->app['config']->get('prerender.enable')) {
-            /** @var Kernel $kernel */
+            /** @var \Illuminate\Foundation\Http\Kernel $kernel */
             $kernel = $this->app['Illuminate\Contracts\Http\Kernel'];
             $kernel->pushMiddleware(PrerenderMiddleware::class);
         }

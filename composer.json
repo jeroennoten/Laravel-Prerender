@@ -10,10 +10,13 @@
         }
     ],
     "require": {
-        "php": ">=5.5.9",
-        "illuminate/support": "~5.0.14|~5.1|^6.0|^7.0",
-        "guzzlehttp/guzzle": "^6.0",
+        "php": "^7.2",
+        "illuminate/support": "^6.0|^7.0|^8.0",
+        "guzzlehttp/guzzle": "^6.0|^7.0",
         "symfony/psr-http-message-bridge": "^1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.4|^9.0"
     },
     "autoload": {
         "psr-4": {
