@@ -35,10 +35,10 @@
     |
     | By default Prerender returns soft HTTP codes. If you would like it to
     | return the real ones in case of Redirection (3xx) or status Not Found (404),
-    | set this parameter to false. 
+    | set this parameter to false.
     | Keep in mind that returning real HTTP codes requires appropriate meta tags
     | to be set. For more details, see github.com/prerender/prerender#httpheaders
-    | 
+    |
     */
 
     'prerender_soft_http_codes' => env('PRERENDER_SOFT_HTTP_STATUS_CODES', true),
@@ -163,5 +163,23 @@
         'pinterest',
         'developers.google.com/+/web/snippet',
         'slackbot',
+        'vkshare',
+        'w3c_validator',
+        'redditbot',
+        'applebot',
+        'whatsapp',
+        'flipboard',
+        'tumblr',
+        'bitlybot',
+        'skypeuripreview',
+        'nuzzel',
+        'discordbot',
+        'google page speed',
+        'qwantify',
+        'pinterestbot',
+        'bitrix link preview',
+        'xing-contenttabreceiver',
+        'chrome-lighthouse',
+        'telegrambot',
     ],
 ];
